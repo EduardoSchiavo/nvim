@@ -2,6 +2,8 @@
 -- LSP configuration
 ---
 local lsp_zero = require('lsp-zero')
+local util = require('lspconfig/util')
+local lspconfig = require('lspconfig')
 
 
 
@@ -18,6 +20,16 @@ local lsp_attach = function(client, bufnr)
     vim.keymap.set('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
     vim.keymap.set({ 'n', 'x' }, '<F3>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
     vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
+    -- Autoformat Go files on save
+    if client.name == "gopls" then
+        vim.api.nvim_create_autocmd("BufWritePre", {
+            group = vim.api.nvim_create_augroup("GoFormat", { clear = true }),
+            buffer = bufnr,
+            callback = function()
+                vim.lsp.buf.format({ async = false })
+            end,
+        })
+    end
 end
 
 lsp_zero.extend_lspconfig({
@@ -32,7 +44,34 @@ lsp_zero.extend_lspconfig({
 ---require('lspconfig').rust_analyzer.setup({})
 ---require('lspconfig').java_language_server.setup({})
 ---require('lspconfig').ts_ls.setup({})
----require('lspconfig').eslint.setup({})
+
+
+
+-- `gopls` setup
+lspconfig.gopls.setup({
+    on_attach = lsp_attach,
+    capabilities = require('cmp_nvim_lsp').default_capabilities(),
+    cmd = { "gopls" },
+    filetypes = { "go", "gomod", "gowork", "gotmpl" },
+    root_dir = util.root_pattern("go.work", "go.mod", ".git"),
+    settings = {
+        gopls = {
+            completeUnimported = true,
+            usePlaceholders = true,
+            analyses = {
+                unusedparams = true,
+            },
+            format = {
+                maxLineLength = 80,
+            },
+        },
+    },
+})
+
+
+
+
+
 
 ---
 -- Autocompletion setup
@@ -53,6 +92,8 @@ cmp.setup({
         ['<CR>'] = cmp.mapping.confirm({ select = true }),
         ['<C-f>'] = cmp_action.luasnip_jump_forward(),
         ['<C-b>'] = cmp_action.luasnip_jump_backward(),
+        ['<C-n>'] = cmp.mapping.select_next_item(),
+        ['<C-p>'] = cmp.mapping.select_prev_item(),
 
     })
 })
