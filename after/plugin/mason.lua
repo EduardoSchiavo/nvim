@@ -2,7 +2,7 @@ require('mason').setup({})
 require('mason-lspconfig').setup({
     -- Replace the language servers listed here
     -- with the ones you want to install
-    ensure_installed = { 'pylsp', 'ts_ls', 'eslint', 'java_language_server', 'lua_ls', 'rust_analyzer', 'robotframework_ls' },
+    ensure_installed = { 'pylsp', 'lua_ls', 'rust_analyzer' },
     handlers = {
         function(server_name)
             if server_name == 'pylsp' then

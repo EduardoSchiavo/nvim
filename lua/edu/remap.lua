@@ -5,7 +5,7 @@ vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 -- vim.keymap.set("n", "<C-_>", "<leader>gcc", {remap = true})
 vim.keymap.set("n", "<C-/>", "<leader>gcc", {remap = true})
 vim.keymap.set("v", "<C-/>", "<leader>gcc", {remap = true})
--- vim.keymap.set("v", "<D-/>", "<leader>gcc", {remap = true})
+vim.keymap.set("v", "<D-/>", "<leader>gcc", {remap = true})
 
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")

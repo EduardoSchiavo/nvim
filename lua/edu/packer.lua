@@ -22,6 +22,8 @@ return require('packer').startup(function(use)
   use('nvim-treesitter/nvim-treesitter', {run =  ':TSUpdate'})
   use('nvim-treesitter/playground')
   use "nvim-lua/plenary.nvim" -- don't forget to add this one if you don't have it yet!
+  use 'mfussenegger/nvim-dap'
+  use 'leoluz/nvim-dap-go'
   use {
 	  "ThePrimeagen/harpoon",
 	  branch = "harpoon2",
@@ -37,7 +39,7 @@ return require('packer').startup(function(use)
   use {"williamboman/mason.nvim",
   "williamboman/mason-lspconfig.nvim",
   }
-
+  use 'mfussenegger/nvim-lint'
 
 
 end)
